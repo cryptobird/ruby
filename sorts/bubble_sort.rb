@@ -27,7 +27,7 @@ end
 
 def bubble_sort(array)
   sorted = false
-  while !sorted do
+  until sorted do
     array = bsort(array)
     sorted = is_correct?(array)
   end
