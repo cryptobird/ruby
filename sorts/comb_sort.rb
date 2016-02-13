@@ -1,5 +1,6 @@
-def comb(array)
+# require 'byebug'
 
+def comb(array)
   gap = array.length-1 #set initial gap length
   while gap >= 0 do
     array = pass(array, gap)
@@ -20,15 +21,14 @@ def pass(array, gap) #loop over array, switching items on either side of gap
     if gap == 0
       pair = array.slice!(inc, 2)
       pair.first < pair.last ? array.insert(inc, pair) : array.insert(inc, pair.reverse)
-      array.flatten!
-      inc += 1
     else
       inner_array = array.slice!(inc, gap)
       needs_switch?(inner_array) ? comb_switch(inner_array) : inner_array
       array.insert(inc, inner_array)
-      array.flatten!
-      inc += 1
     end
+
+    array.flatten!
+    inc += 1
   end
 
   array
@@ -40,22 +40,18 @@ end
 
 def is_correct?(array)
   len, int = array.length, 0
+
   while int < len-1 do
-    if array[int] < array[int+1]
-      int += 1
-    else
-      return false
-    end
+    array[int] < array[int+1] ? int += 1 : (return false)
   end
+  
   true
 end
 
 def comb_sort(array)
-  until is_correct?(array) do
-    array = comb(array)
-  end
+  array = comb(array) until is_correct?(array)
   array
 end
 
 arr = [*1..20].shuffle
-puts comb_sort arr
+puts comb_sort(arr)
